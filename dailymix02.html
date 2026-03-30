@@ -1,0 +1,78 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>VibeStream Pro | Daily Mix 2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+* { box-sizing:border-box; font-family:Arial, sans-serif; }
+body { margin:0; background:#050b1e; color:white; display:flex; height:100vh; }
+.sidebar { width:220px; background:#0b1028; padding:1rem; display:flex; flex-direction:column; }
+.sidebar h1 { color:#3b82f6; text-align:center; }
+.sidebar a { color:#aaa; text-decoration:none; margin:0.7rem 0; display:block; }
+.sidebar a:hover { color:#3b82f6; }
+.main { flex:1; display:flex; flex-direction:column; padding:1rem; overflow-y:auto; }
+.song { padding:0.8rem; background:#0d1224; margin-bottom:0.5rem; border-radius:8px; cursor:pointer; }
+.song:hover { background:#1b2445; }
+.player { height:70px; background:#0b1028; display:flex; align-items:center; justify-content:space-between; padding:0 1rem; }
+.controls span { margin:0 10px; cursor:pointer; }
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+  <h1>VibeStream Pro</h1>
+  <a href="spongtifymain.html">Home</a>
+  <a href="library.html">Library</a>
+  <a href="playlist.html">Playlists</a>
+  <a href="liked_songs.html">Liked Songs</a>
+   <a href="account.html">Account</a>
+  <a href="spongtify.html">Logout</a>
+  
+</div>
+
+<div class="main">
+  <h2>Daily Mix 2</h2>
+
+  <div class="song" onclick="playSong('audio/song1.mp3','Midnight Drive','Artist A')">Midnight Drive - Artist A</div>
+  <div class="song" onclick="playSong('audio/song2.mp3','Ocean Lights','Artist B')">Ocean Lights - Artist B</div>
+  <div class="song" onclick="playSong('audio/song3.mp3','Blue Skies','Artist C')">Blue Skies - Artist C</div>
+
+</div>
+
+<div class="player">
+  <div>🎵 Now Playing: <b id="song-title">Nothing Yet</b></div>
+  <div class="controls">
+    <span id="play">▶</span>
+  </div>
+  <audio id="audio-player" src="" preload="auto"></audio>
+</div>
+
+<script>
+const player = document.getElementById('audio-player');
+const title = document.getElementById('song-title');
+const playBtn = document.getElementById('play');
+
+function playSong(src,name,artist){
+  player.src = src;
+  player.play();
+  title.textContent = name + " - " + artist;
+  playBtn.textContent = "⏸";
+}
+
+playBtn.addEventListener('click',()=>{
+  if(player.paused){
+    player.play();
+    playBtn.textContent="⏸";
+  } else {
+    player.pause();
+    playBtn.textContent="▶";
+  }
+});
+</script>
+
+</body>

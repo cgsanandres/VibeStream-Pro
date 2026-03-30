@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>VibeStream Pro | Account</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+* { box-sizing:border-box; font-family:Arial, sans-serif; }
+
+body {
+    margin:0;
+    background:#050b1e;
+    color:white;
+    display:flex;
+    height:100vh;
+}
+
+.sidebar {
+    width:220px;
+    background:#0b1028;
+    padding:1rem;
+    display:flex;
+    flex-direction:column;
+}
+
+.sidebar h1 {
+    color:#3b82f6;
+    text-align:center;
+}
+
+.sidebar a {
+    color:#aaa;
+    text-decoration:none;
+    margin:0.7rem 0;
+    display:block;
+}
+
+.sidebar a:hover {
+    color:#3b82f6;
+}
+
+.main {
+    flex:1;
+    padding:2rem;
+}
+
+.account-box {
+    background:#0d1224;
+    padding:2rem;
+    border-radius:12px;
+    max-width:400px;
+}
+
+.account-box h2 {
+    margin-top:0;
+    color:#3b82f6;
+}
+
+.info {
+    margin:10px 0;
+    font-size:16px;
+}
+
+button {
+    margin-top:15px;
+    padding:10px 20px;
+    background:#3b82f6;
+    border:none;
+    cursor:pointer;
+    color:white;
+}
+
+button:hover {
+    background:#2563eb;
+}
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+  <h1>VibeStream Pro</h1>
+  <a href="spongtifymain.html">Home</a>
+  <a href="library.html">Library</a>
+  <a href="playlist.html">Playlists</a>
+  <a href="liked_songs.html">Liked Songs</a>
+  <a href="account.html">Account</a>
+  <a href="#" onclick="logout()">Logout</a>
+</div>
+
+<div class="main">
+    <div class="account-box">
+        <h2>Your Account</h2>
+        <div class="info">Email: <b id="userEmail"></b></div>
+        <div class="info">Account Type: Free Listener</div>
+        <div class="info">Member Status: Active</div>
+        <button onclick="logout()">Logout</button>
+    </div>
+</div>
+
+<script>
+/* Protect page */
+if(localStorage.getItem("spongLoggedIn") !== "true"){
+    window.location.href="spongtify.html";
+}
+
+/* Display Email */
+document.getElementById("userEmail").innerText =
+    localStorage.getItem("spongEmail");
+
+/* Logout */
+function logout(){
+    localStorage.removeItem("spongLoggedIn");
+    window.location.href="spongtify.html";
+}
+</script>
+
+</body>
+</html>
