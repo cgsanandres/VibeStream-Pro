@@ -6,101 +6,349 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-* { box-sizing:border-box; font-family:Arial, sans-serif; }
-body { margin:0; background:#050b1e; color:white; display:flex; height:100vh; }
+*/* Custom Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #050b1e; }
+::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; }
 
-/* Sidebar */
-.sidebar { width:220px; background:#0b1028; padding:1rem; display:flex; flex-direction:column; }
-.sidebar h1 { color:#3b82f6; text-align:center; }
-.sidebar a { color:#aaa; text-decoration:none; margin:0.7rem 0; display:block; }
-.sidebar a:hover { color:#3b82f6; }
+* { box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; transition: all 0.25s ease; }
 
-/* Main */
-.main { flex:1; display:flex; flex-direction:column; }
+body { 
+    margin: 0; 
+    background: linear-gradient(135deg, #050b1e 0%, #0d1224 100%); 
+    color: white; 
+    display: flex; 
+    height: 100vh; 
+    overflow: hidden; 
+}
 
-/* Top bar */
-.topbar { padding:1rem; background:#0d1224; display:flex; justify-content:space-between; align-items:center; }
-.topbar h2 { margin:0; }
+/* Sidebar - Glassmorphism */
+.sidebar { 
+    width: 240px; 
+    background: rgba(11, 16, 40, 0.9); 
+    backdrop-filter: blur(15px);
+    padding: 1.5rem; 
+    display: flex; 
+    flex-direction: column; 
+    border-right: 1px solid rgba(255,255,255,0.05);
+}
 
-/* Content */
-.content { padding:1rem; overflow-y:auto; }
-.grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:1rem; }
-.card { background:#0d1224; border-radius:10px; padding:0.5rem; text-align:center; cursor:pointer; }
-.card img { width:100%; border-radius:8px; }
-.card:hover { box-shadow:0 0 15px rgba(59,130,246,0.6); }
+.sidebar h1 { 
+    font-size: 1.6rem;
+    background: linear-gradient(to right, #3b82f6, #9333ea);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 2rem;
+    text-align: center;
+}
 
-/* Player */
-.player { height:70px; background:#0b1028; display:flex; align-items:center; justify-content:space-between; padding:0 1rem; }
-.controls span { margin:0 10px; cursor:pointer; }
+.sidebar a { 
+    color: #94a3b8; 
+    text-decoration: none; 
+    margin: 0.4rem 0; 
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    display: block; 
+    font-weight: 500;
+}
+
+.sidebar a:hover { 
+    background: rgba(59, 130, 246, 0.1);
+    color: #3b82f6; 
+    transform: translateX(8px);
+}
+
+/* Main Area */
+.main { flex: 1; display: flex; flex-direction: column; }
+
+.topbar { 
+    padding: 1.5rem 2rem; 
+    background: rgba(13, 18, 36, 0.7); 
+    backdrop-filter: blur(20px);
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.topbar h2 { font-size: 1.8rem; margin: 0; letter-spacing: -0.5px; }
+.topbar a { text-decoration: none; font-size: 1.2rem; }
+
+/* Content Scrolling */
+.content { padding: 2rem; overflow-y: auto; flex: 1; }
+h3 { font-size: 1.4rem; margin: 2rem 0 1rem; color: #f1f5f9; }
+
+/* Grid & Cards */
+.grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); 
+    gap: 1.5rem; 
+}
+
+.card { 
+    background: rgba(30, 41, 59, 0.4); 
+    border: 1px solid rgba(255,255,255,0.03);
+    border-radius: 12px; 
+    padding: 1rem; 
+    text-align: center; 
+    cursor: pointer;
+}
+
+.card:hover { 
+    background: rgba(30, 41, 59, 0.8);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+}
+
+.card img { 
+    width: 100%; 
+    aspect-ratio: 1/1; 
+    object-fit: cover;
+    border-radius: 8px; 
+    margin-bottom: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+/* Specific Style for Recommended Artists (Circles) */
+.section-artists .card img {
+    border-radius: 50%;
+}
+
+.card p { margin: 8px 0 0; font-weight: 600; font-size: 0.95rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.card p a { color: white; text-decoration: none; }
+
+/* Player Bar */
+.player { 
+    height: 85px; 
+    background: #0b1028; 
+    border-top: 1px solid rgba(255,255,255,0.1);
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    padding: 0 2rem; 
+}
+
+.controls span { 
+    font-size: 1.4rem; 
+    margin: 0 12px; 
+    cursor: pointer; 
+    color: #94a3b8; 
+}
+
+.controls span:hover { color: #3b82f6; }
+
+#play { 
+    background: #3b82f6; 
+    color: white; 
+    padding: 10px 14px; 
+    border-radius: 50%; 
+}
+
+.volume-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 150px;
+}
+
+/* The Slider Track */
+#volume-slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 4px;
+    border-radius: 5px;
+    background: #1e293b; /* Dark track */
+    outline: none;
+    cursor: pointer;
+}
+
+/* The Slider Handle (The Circle) */
+#volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #3b82f6; /* Pro Blue */
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(59, 130, 246, 0.5);
+}
+
+#volume-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.3);
+}
+
+
 </style>
 </head>
 
 <body>
 <div class="sidebar">
   <h1>VibeStream Pro</h1>
-  <a href="spongtifymain.html">Home</a>
+  <a href="index.html">Home</a>
   <a href="library.html">Library</a>
   <a href="playlist.html">Playlists</a>
   <a href="liked_songs.html">Liked Songs</a>
-   <a href="account.html">Account</a>
-  <a href="spongtify.html">Logout</a>
+  <a href="login.html">Logout</a>
 </div>
 
 <div class="main">
   <div class="topbar">
     <h2>Your Library</h2>
-    <span><a href="account.html">👤</a></span>
   </div>
 
   <div class="content">
     <h3>Liked Songs</h3>
     <div class="grid">
       <div class="card" onclick="playSong('music/multo.mp3','Multo','Cup of Joe')">
-        <img src="C:\Users\SBH-CL3-WS01\Desktop\WebDev111\mimasour\multo.jpeg"><p>Multo</p></div>
+        <img src="images/multo.jpeg"><p>Multo</p></div>
       <div class="card" onclick="playSong('music/nothinonyou.mp3', 'Nothin On You', 'B.o.B, Bruno Mars')">
-        <img src="C:\Users\SBH-CL3-WS01\Desktop\WebDev111\mimasour\nothingonyou.jpeg"></p>Nothin' On You</div>
+        <img src="images/nothingonyou.jpeg"></p>Nothin' On You</div>
       <div class="card" onclick="playSong('music/billionaire.mp3','Billionaire','Travie McCoy ft. Bruno Mars')">
-        <img src="C:\Users\SBH-CL3-WS01\Desktop\WebDev111\mimasour\billionaire.jpeg"><p>Billionaire</p></div>
+        <img src="images/billionaire.jpeg"><p>Billionaire</p></div>
     </div>
 
     <h3 style="margin-top:1.5rem;">Your Playlists</h3>
     <div class="grid">
       <div class="card">
-        <img src="C:\Users\SBH-CL3-WS01\Desktop\WebDev111\mimasour\phonkcover.jpeg"><p><a href="phonk.html">Phonk</a></p></div>
+        <img src="images/phonkcover.jpeg"><p><a href="phonk.html">Phonk</a></p></div>
       <div class="card">
-        <img src="C:\Users\SBH-CL3-WS01\Desktop\WebDev111\mimasour\chill_beats.jpeg"><p><a href="chillbeats.html">Chill Beats</a></p></div>
+        <img src="images/chill_beats.jpeg"><p><a href="chillbeats.html">Chill Beats</a></p></div>
       <div class="card">
-        <img src="C:\Users\SBH-CL3-WS01\Desktop\WebDev111\mimasour\rock_mix.jpeg"><p><a href="rockmix.html">Rock Mix</a></p></div>
+        <img src="images/rock_mix.jpeg"><p><a href="rockmix.html">Rock Mix</a></p></div>
     </div>
+
+    <!-- NEW SECTION: Recently Played Albums -->
+    <h3 style="margin-top:1.5rem;">Recently Played Albums</h3>
+    <div class="grid">
+      <div class="card">
+        <img src="images/album_a.jpeg">Album A</a></p></div>
+      <div class="card">
+        <img src="images/album_b.jpeg">Album B</a></p></div>
+      <div class="card">
+        <img src="images/album_c.jpeg">Album C</a></p></div>
+    </div>
+
+    <!-- NEW SECTION: Recommended Artists -->
+	<h3 style="margin-top:1.5rem;">Recommended Artists</h3>
+	<div class="grid section-artists"> <!-- Added class here -->
+		<div class="card">
+   <img src="images/artistx.jpeg"><p><a href="artist_x.html">Artist X</a></p></div>
+      <div class="card">
+        <img src="images/artisty.jpeg"><p><a href="artist_y.html">Artist Y</a></p></div>
+      <div class="card">
+        <img src="images/artistz.jpeg"><p><a href="artist_z.html">Artist Z</a></p></div>
+    </div>
+    
+   
+    <!-- END OF NEW SECTIONS -->
+  </div>
+<div class="player">
+  <div>🎵 Now Playing: <b id="song-title">Nothing Yet</b></div>
+  
+  <div class="controls">
+    <span id="prev">⏮</span>
+    <span id="play">▶</span>
+    <span id="next">⏭</span>
   </div>
 
-  <div class="player">
-    <div>🎵 Now Playing: <b id="song-title">Nothing Yet</b></div>
-    <div class="controls">
-      <span id="prev">⏮</span>
-      <span id="play">▶</span>
-      <span id="next">⏭</span>
-    </div>
-    <audio id="audio-player" src="" preload="auto"></audio>
+  <!-- ADD THIS: Volume Control -->
+  <div class="volume-container">
+    <span>🔊</span>
+    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5">
   </div>
+
+  <audio id="audio-player" src="" preload="auto"></audio>
 </div>
 
+
+
+
 <script>
+// 1. Identify all players and buttons
 const player = document.getElementById('audio-player');
 const title = document.getElementById('song-title');
 const playBtn = document.getElementById('play');
+const volumeSlider = document.getElementById('volume-slider');
+const muteBtn = document.getElementById('mute-btn');
 
-function playSong(src, songName, artist) {
-  player.src = src;
-  player.play();
-  title.textContent = songName + " - " + artist;
-  playBtn.textContent = '⏸';
+// --- VOLUME MEMORY ---
+function setupVolume() {
+    const savedVol = localStorage.getItem("vibeStreamVolume") || 0.5;
+    player.volume = savedVol;
+    if (volumeSlider) {
+        volumeSlider.value = savedVol;
+        volumeSlider.addEventListener('input', (e) => {
+            player.volume = e.target.value;
+            localStorage.setItem("vibeStreamVolume", e.target.value);
+            updateMuteIcon(e.target.value);
+        });
+    }
 }
 
-playBtn.addEventListener('click', () => {
-  if (player.paused) { player.play(); playBtn.textContent='⏸'; }
-  else { player.pause(); playBtn.textContent='▶'; }
+function updateMuteIcon(vol) {
+    if (muteBtn) muteBtn.textContent = vol == 0 ? '🔇' : vol < 0.5 ? '🔉' : '🔊';
+}
+
+// --- PLAY SONG FUNCTION ---
+function playSong(src, songName, artist) {
+    player.src = src;
+    player.play();
+    const fullTitle = songName + " - " + artist;
+    if (title) title.textContent = fullTitle;
+    if (playBtn) playBtn.textContent = '⏸';
+    
+    // Save to memory
+    localStorage.setItem("lastSongSrc", src);
+    localStorage.setItem("lastSongTitle", fullTitle);
+}
+
+// --- RESUME LOGIC (The most important part) ---
+window.addEventListener("load", () => {
+    setupVolume();
+    
+    const savedSrc = localStorage.getItem("lastSongSrc");
+    const savedTitle = localStorage.getItem("lastSongTitle");
+    const savedTime = localStorage.getItem("lastTime");
+    const wasPlaying = localStorage.getItem("wasPlaying") === "true";
+
+    if (savedSrc) {
+        player.src = savedSrc;
+        if (title) title.textContent = savedTitle;
+        if (savedTime) player.currentTime = parseFloat(savedTime);
+
+        if (wasPlaying) {
+            // Browsers usually block this! We try to play automatically.
+            player.play().then(() => {
+                if (playBtn) playBtn.textContent = '⏸';
+            }).catch(() => {
+                // If it fails, the user just needs to click ONCE anywhere to start
+                console.log("Browser blocked autoplay. Click anywhere to resume.");
+                if (playBtn) playBtn.textContent = '▶'; 
+            });
+        }
+    }
 });
+
+// Save progress every second
+setInterval(() => {
+    if (player.src && !player.paused) {
+        localStorage.setItem("lastTime", player.currentTime);
+        localStorage.setItem("wasPlaying", "true");
+    } else {
+        localStorage.setItem("wasPlaying", "false");
+    }
+}, 1000);
+
+// Basic Button Listeners
+if (playBtn) {
+    playBtn.addEventListener('click', () => {
+        if (player.paused) { player.play(); playBtn.textContent = '⏸'; }
+        else { player.pause(); playBtn.textContent = '▶'; }
+    });
+}
+
+
 </script>
 
 </body>
