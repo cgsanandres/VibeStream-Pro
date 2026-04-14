@@ -6,33 +6,192 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-* { box-sizing:border-box; font-family:Arial, sans-serif; }
-body { margin:0; background:#050b1e; color:white; display:flex; height:100vh; }
+/* Custom Scrollbar for that 'Pro' look */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #050b1e; }
+::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; }
 
-/* Sidebar */
-.sidebar { width:220px; background:#0b1028; padding:1rem; display:flex; flex-direction:column; }
-.sidebar h1 { color:#3b82f6; text-align:center; }
-.sidebar a { color:#aaa; text-decoration:none; margin:0.7rem 0; display:block; }
-.sidebar a:hover { color:#3b82f6; }
+* { box-sizing: border-box; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; transition: all 0.3s ease; }
 
-/* Main */
-.main { flex:1; display:flex; flex-direction:column; }
+body { 
+    margin: 0; 
+    background: linear-gradient(135deg, #050b1e 0%, #0d1224 100%); 
+    color: white; 
+    display: flex; 
+    height: 100vh; 
+    overflow: hidden;
+}
 
-/* Top bar */
-.topbar { padding:1rem; background:#0d1224; display:flex; justify-content:space-between; align-items:center; }
-.topbar input { width:60%; padding:0.5rem; border:none; border-radius:20px; outline:none; }
+/* Sidebar - Sleeker with active indicators */
+.sidebar { 
+    width: 240px; 
+    background: rgba(11, 16, 40, 0.8); 
+    backdrop-filter: blur(10px);
+    padding: 1.5rem; 
+    display: flex; 
+    flex-direction: column; 
+    border-right: 1px solid rgba(255,255,255,0.05);
+}
 
-/* Content */
-.content { padding:1rem; overflow-y:auto; }
-.section h2 { margin:1rem 0 0.5rem; }
-.grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:1rem; }
-.card { background:#0d1224; border-radius:10px; padding:0.5rem; text-align:center; cursor:pointer; }
-.card img { width:100%; border-radius:8px; }
-.card:hover { box-shadow:0 0 15px rgba(59,130,246,0.6); }
+.sidebar h1 { 
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+    background: linear-gradient(to right, #3b82f6, #9333ea);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 2rem;
+}
 
-/* Player */
-.player { height:70px; background:#0b1028; display:flex; align-items:center; justify-content:space-between; padding:0 1rem; }
-.controls span { margin:0 10px; cursor:pointer; }
+.sidebar a { 
+    color: #94a3b8; 
+    text-decoration: none; 
+    margin: 0.5rem 0; 
+    padding: 0.8rem;
+    border-radius: 8px;
+    display: block; 
+    font-weight: 500;
+}
+
+.sidebar a:hover { 
+    background: rgba(59, 130, 246, 0.1);
+    color: #3b82f6; 
+    transform: translateX(5px);
+}
+
+/* Main Content Area */
+.main { flex: 1; display: flex; flex-direction: column; position: relative; }
+
+/* Top bar - Glass effect */
+.topbar { 
+    padding: 1rem 2rem; 
+    background: rgba(13, 18, 36, 0.7); 
+    backdrop-filter: blur(20px);
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    z-index: 10;
+}
+
+.topbar input { 
+    width: 40%; 
+    padding: 0.7rem 1.2rem; 
+    border: 1px solid rgba(255,255,255,0.1); 
+    border-radius: 25px; 
+    background: #1e293b;
+    color: white;
+    outline: none; 
+}
+
+.topbar input:focus { 
+    width: 45%; 
+    border-color: #3b82f6; 
+    box-shadow: 0 0 15px rgba(59,130,246,0.3);
+}
+
+/* Content Grid */
+.content { padding: 2rem; overflow-y: auto; flex-grow: 1; }
+
+.section h2 { font-size: 1.8rem; margin-bottom: 1.5rem; font-weight: 700; }
+
+.grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
+    gap: 1.5rem; 
+}
+
+/* Cards - Floating effect */
+.card { 
+    background: rgba(30, 41, 59, 0.5); 
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 12px; 
+    padding: 1rem; 
+    text-align: left; 
+    cursor: pointer; 
+    position: relative;
+}
+
+.card img { 
+    width: 100%; 
+    aspect-ratio: 1/1; 
+    object-fit: cover;
+    border-radius: 8px; 
+    margin-bottom: 0.8rem;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+}
+
+.card p a { color: white; text-decoration: none; font-weight: 600; }
+
+.card:hover { 
+    background: rgba(30, 41, 59, 0.8);
+    transform: translateY(-8px);
+    box-shadow: 0 12px 20px rgba(0,0,0,0.4);
+}
+
+/* Music Player - Fixed bottom "Floating" Bar */
+.player { 
+    height: 90px; 
+    background: #0b1028; 
+    border-top: 1px solid rgba(255,255,255,0.1);
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    padding: 0 2rem; 
+}
+
+.controls span { 
+    font-size: 1.5rem; 
+    margin: 0 15px; 
+    cursor: pointer; 
+    color: #94a3b8;
+}
+
+.controls span:hover { color: #3b82f6; transform: scale(1.2); }
+
+#play { 
+    background: #3b82f6; 
+    color: white; 
+    padding: 10px 15px; 
+    border-radius: 50%; 
+    display: inline-block;
+}
+
+#play:hover { background: #2563eb; color: white; }
+
+.volume-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 150px;
+}
+
+/* The Slider Track */
+#volume-slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 4px;
+    border-radius: 5px;
+    background: #1e293b; /* Dark track */
+    outline: none;
+    cursor: pointer;
+}
+
+/* The Slider Handle (The Circle) */
+#volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #3b82f6; /* Pro Blue */
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(59, 130, 246, 0.5);
+}
+
+#volume-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.3);
+}
+
+
 </style>
 </head>
 
@@ -40,19 +199,19 @@ body { margin:0; background:#050b1e; color:white; display:flex; height:100vh; }
 
 <div class="sidebar">
   <h1>VibeStream Pro</h1>
-  <a href="spongtifymain.html">Home</a>
+  <a href="index.html">Home</a>
   <a href="library.html">Library</a>
   <a href="playlist.html">Playlists</a>
   <a href="liked_songs.html">Liked Songs</a>
-   <a href="account.html">Account</a>
-  <a href="spongtify.html">Logout</a>
+  
+  <a href="logout.html">Logout</a>
   
 </div>
 
 <div class="main">
   <div class="topbar">
     <input type="text" placeholder="Search songs, artists...">
-    <span><a href="account.html">👤</a></span>
+   
   </div>
 
   <div class="content">
@@ -60,11 +219,11 @@ body { margin:0; background:#050b1e; color:white; display:flex; height:100vh; }
       <h2>Made for You</a></h2>
       <div class="grid">
         <div class="card">
-          <img src="C:\Users\SBH-CL3-WS01\Desktop\WebDev111\mimasour\dailymix01.jpeg"><p><a href="dailymix01.html">Daily Mix 1</a></p></div>
+          <img src="images/dailymix01.jpeg">Daily Mix 1</div>
         <div class="card">
-          <img src="C:\Users\SBH-CL3-WS01\Desktop\WebDev111\mimasour\dailymix02.jpeg"><p><a href="dailymix02.html">Daily Mix 2</a></p></div>
+          <img src="images/dailymix02.jpeg">Daily Mix 2</div>
         <div class="card">
-          <img src="C:\Users\SBH-CL3-WS01\Desktop\WebDev111\mimasour\dailymix03.jpeg"><p><a href="dailymix03.html">Daily Mix 3</a></p></div>
+          <img src="images/dailymix03.jpeg">Daily Mix 3</div>
       </div>
     </div>
 
@@ -72,40 +231,122 @@ body { margin:0; background:#050b1e; color:white; display:flex; height:100vh; }
       <h3>Recently Played</h3>
       <div class="grid">
         <div class="card" onclick="playSong('music/requiem-mass.mp3','Requiem Mass','Lappy')">
-          <img src="C:\Users\SBH-CL3-WS01\Desktop\WebDev111\mimasour\requiem-mass.jpeg"><p>Requiem Mass</p></div>
+          <img src="images/requiem-mass.jpeg"><p>Requiem Mass</p></div>
         <div class="card" onclick="playSong('music/zwillingstürmeimherbst.mp3','Zwillingstürme im Herbst','Lappy')">
-          <img src="C:\Users\SBH-CL3-WS01\Desktop\WebDev111\mimasour\zwillingstürmeimherbst.jpeg"><p>Zwillingstürme im Herbst</p></div>
+          <img src="images/zwillingstürmeimherbst.jpeg"><p>Zwillingstürme im Herbst</p></div>
+		  <div class="card" onclick="playSong('music/im_with_you.mp3','Im With You','Avril Lavigne')">
+          <img src="images/im_with_you.jpeg"><p>Im With You</p></div>
       </div>
     </div>
   </div>
+  
+
+
 
   <div class="player">
-    <div>🎵 Now Playing: <b id="song-title">Nothing Yet</b></div>
-    <div class="controls">
-      <span id="prev">⏮</span>
-      <span id="play">▶</span>
-      <span id="next">⏭</span>
-    </div>
-    <audio id="audio-player" src="" preload="auto"></audio>
+  <div>🎵 Now Playing: <b id="song-title">Nothing Yet</b></div>
+  
+  <div class="controls">
+    <span id="prev">⏮</span>
+    <span id="play">▶</span>
+    <span id="next">⏭</span>
   </div>
+
+  <!-- ADD THIS: Volume Control -->
+  <div class="volume-container">
+    <span>🔊</span>
+    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5">
+  </div>
+
+  <audio id="audio-player" src="" preload="auto"></audio>
 </div>
 
+
 <script>
+// 1. Identify all players and buttons
 const player = document.getElementById('audio-player');
 const title = document.getElementById('song-title');
 const playBtn = document.getElementById('play');
+const volumeSlider = document.getElementById('volume-slider');
+const muteBtn = document.getElementById('mute-btn');
 
-function playSong(src, songName, artist) {
-  player.src = src;
-  player.play();
-  title.textContent = songName + " - " + artist;
-  playBtn.textContent = '⏸';
+// --- VOLUME MEMORY ---
+function setupVolume() {
+    const savedVol = localStorage.getItem("vibeStreamVolume") || 0.5;
+    player.volume = savedVol;
+    if (volumeSlider) {
+        volumeSlider.value = savedVol;
+        volumeSlider.addEventListener('input', (e) => {
+            player.volume = e.target.value;
+            localStorage.setItem("vibeStreamVolume", e.target.value);
+            updateMuteIcon(e.target.value);
+        });
+    }
 }
 
-playBtn.addEventListener('click', () => {
-  if (player.paused) { player.play(); playBtn.textContent='⏸'; }
-  else { player.pause(); playBtn.textContent='▶'; }
+function updateMuteIcon(vol) {
+    if (muteBtn) muteBtn.textContent = vol == 0 ? '🔇' : vol < 0.5 ? '🔉' : '🔊';
+}
+
+// --- PLAY SONG FUNCTION ---
+function playSong(src, songName, artist) {
+    player.src = src;
+    player.play();
+    const fullTitle = songName + " - " + artist;
+    if (title) title.textContent = fullTitle;
+    if (playBtn) playBtn.textContent = '⏸';
+    
+    // Save to memory
+    localStorage.setItem("lastSongSrc", src);
+    localStorage.setItem("lastSongTitle", fullTitle);
+}
+
+// --- RESUME LOGIC (The most important part) ---
+window.addEventListener("load", () => {
+    setupVolume();
+    
+    const savedSrc = localStorage.getItem("lastSongSrc");
+    const savedTitle = localStorage.getItem("lastSongTitle");
+    const savedTime = localStorage.getItem("lastTime");
+    const wasPlaying = localStorage.getItem("wasPlaying") === "true";
+
+    if (savedSrc) {
+        player.src = savedSrc;
+        if (title) title.textContent = savedTitle;
+        if (savedTime) player.currentTime = parseFloat(savedTime);
+
+        if (wasPlaying) {
+            // Browsers usually block this! We try to play automatically.
+            player.play().then(() => {
+                if (playBtn) playBtn.textContent = '⏸';
+            }).catch(() => {
+                // If it fails, the user just needs to click ONCE anywhere to start
+                console.log("Browser blocked autoplay. Click anywhere to resume.");
+                if (playBtn) playBtn.textContent = '▶'; 
+            });
+        }
+    }
 });
+
+// Save progress every second
+setInterval(() => {
+    if (player.src && !player.paused) {
+        localStorage.setItem("lastTime", player.currentTime);
+        localStorage.setItem("wasPlaying", "true");
+    } else {
+        localStorage.setItem("wasPlaying", "false");
+    }
+}, 1000);
+
+// Basic Button Listeners
+if (playBtn) {
+    playBtn.addEventListener('click', () => {
+        if (player.paused) { player.play(); playBtn.textContent = '⏸'; }
+        else { player.pause(); playBtn.textContent = '▶'; }
+    });
+}
+
+
 </script>
 
 </body>
