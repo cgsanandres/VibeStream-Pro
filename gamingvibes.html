@@ -6,28 +6,80 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-* { box-sizing:border-box; font-family:Arial, sans-serif; }
-body { margin:0; background:#050b1e; color:white; display:flex; height:100vh; }
-.sidebar { width:220px; background:#0b1028; padding:1rem; display:flex; flex-direction:column; }
-.sidebar h1 { color:#3b82f6; text-align:center; }
-.sidebar a { color:#aaa; text-decoration:none; margin:0.7rem 0; display:block; }
-.sidebar a:hover { color:#3b82f6; }
-.main { flex:1; display:flex; flex-direction:column; padding:1rem; overflow-y:auto; }
-.song { padding:0.8rem; background:#0d1224; margin-bottom:0.5rem; border-radius:8px; cursor:pointer; }
-.song:hover { background:#1b2445; }
-.player { height:70px; background:#0b1028; display:flex; align-items:center; justify-content:space-between; padding:0 1rem; }
-.controls span { margin:0 10px; cursor:pointer; }
-.table img {
-    width: 45px;
-    height: 45px;
-    object-fit: cover;
-    border-radius: 4px;
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #050b1e; }
+::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; }
+
+* { box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; transition: all 0.2s ease; }
+
+body { 
+    margin: 0; 
+    background: linear-gradient(135deg, #050b1e 0%, #0d1224 100%); 
+    color: white; 
+    display: flex; 
+    height: 100vh; 
+    overflow: hidden; 
 }
 
-.table td {
-    padding: 8px;
-    font-size: 14px;
+/* Sidebar Glassmorphism */
+.sidebar { 
+    width: 240px; 
+    background: rgba(11, 16, 40, 0.9); 
+    backdrop-filter: blur(15px);
+    padding: 1.5rem; 
+    display: flex; 
+    flex-direction: column; 
+    border-right: 1px solid rgba(255,255,255,0.05);
 }
+
+.sidebar h1 { 
+    font-size: 1.6rem;
+    background: linear-gradient(to right, #3b82f6, #9333ea);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.sidebar a { 
+    color: #94a3b8; text-decoration: none; margin: 0.4rem 0; 
+    padding: 0.8rem 1rem; border-radius: 8px; display: block; font-weight: 500;
+}
+
+.sidebar a:hover { background: rgba(59, 130, 246, 0.1); color: #3b82f6; transform: translateX(8px); }
+
+/* Main Content Area */
+.main { flex: 1; display: flex; flex-direction: column; padding: 2rem; overflow-y: auto; padding-bottom: 110px; }
+h2 { font-size: 2.5rem; margin-bottom: 1.5rem; }
+
+/* Modern Tracklist Table */
+.table { width: 100%; border-collapse: collapse; text-align: left; }
+.table thead { color: #94a3b8; border-bottom: 1px solid rgba(255,255,255,0.1); text-transform: uppercase; font-size: 0.8rem; }
+.table th { padding: 1rem; font-weight: 600; }
+
+.table tr { border-radius: 8px; cursor: pointer; }
+.table tr:hover { background: rgba(255, 255, 255, 0.05); }
+
+.table td { padding: 0.8rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.02); }
+.table img { width: 45px; height: 45px; border-radius: 4px; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
+
+/* Fixed Player Bar */
+.player { 
+    position: fixed; bottom: 0; left: 0; width: 100%; height: 90px; 
+    background: #0b1028; border-top: 1px solid rgba(255,255,255,0.1);
+    display: flex; align-items: center; justify-content: space-between; 
+    padding: 0 2rem; z-index: 1000;
+}
+
+.controls span { font-size: 1.5rem; margin: 0 12px; cursor: pointer; color: #94a3b8; }
+.controls span:hover { color: #3b82f6; transform: scale(1.1); }
+#play { background: #3b82f6; color: white; padding: 10px 14px; border-radius: 50%; }
+
+.volume-container { display: flex; align-items: center; gap: 10px; width: 150px; }
+#volume-slider { -webkit-appearance: none; width: 100%; height: 4px; background: #1e293b; border-radius: 5px; outline: none; }
+#volume-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; background: #3b82f6; border-radius: 50%; cursor: pointer; }
+
 
 </style>
 </head>
@@ -49,19 +101,19 @@ body { margin:0; background:#050b1e; color:white; display:flex; height:100vh; }
   <h2>Gaming Vibes</h2>
   <table class="table">
     <tr onclick="playSong('music/we_need_to_get_out_of_here.mp3','Get Out Here','Wiguez & Josh Levoid (Ft. MaryQueen)')">
-      <td><img src="C:\Users\SBH-CL3-WS01\Desktop\WebDev111\mimasour\we_need_to_get.jpeg"></td>
+      <td><img src="images/we_need_to_get.jpeg"></td>
       <td>Get Out Here</td>
       <td>Wiguez & Josh Levoid (Ft. MaryQueen)</td>
       <td>3:57</td>
     </tr>
    <tr onclick="playSong('music/perfect10.mp3', 'Perfect 10', 'Unknown Brain feat Heather Sommer')">
-  <td><img src="C:\Users\SBH-CL3-WS01\Desktop\WebDev111\mimasour\perfect10.jpeg"></td>
+  <td><img src="images/perfect10.jpeg"></td>
   <td>Perfect 10</td>
   <td>Unknown Brain (feat. Heather Sommer)</td>
   <td>3:25</td>
 	</tr>
-    <tr onclick="playSong('music/wherewestarted.mp3','Billionaire','Lost Sky feat Jex')">
-      <td><img src="C:\Users\SBH-CL3-WS01\Desktop\WebDev111\mimasour\wherewestarted.jpeg"></td>
+    <tr onclick="playSong('music/wherewestarted.mp3','Where We Started','Lost Sky feat Jex')">
+      <td><img src="images/wherewestarted.jpeg"></td>
       <td>Where We Started</td>
       <td>Lost Sky (feat. Jex)</td>
       <td>3:42</td>
@@ -71,34 +123,114 @@ body { margin:0; background:#050b1e; color:white; display:flex; height:100vh; }
   
 
 <div class="player">
-  <div>🎵 Now Playing: <b id="song-title">Nothing Yet</b></div>
+  <div style="width: 30%;">🎵 Now Playing: <b id="song-title">Nothing Yet</b></div>
   <div class="controls">
+    <span id="prev">⏮</span>
     <span id="play">▶</span>
+    <span id="next">⏭</span>
+  </div>
+  <div class="volume-container">
+    <span id="mute-btn" style="cursor:pointer;">🔊</span>
+    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5">
   </div>
   <audio id="audio-player" src="" preload="auto"></audio>
 </div>
 
 <script>
+// 1. Grab all elements
 const player = document.getElementById('audio-player');
 const title = document.getElementById('song-title');
 const playBtn = document.getElementById('play');
+const volumeSlider = document.getElementById('volume-slider');
+const muteBtn = document.getElementById('mute-btn');
 
-function playSong(src,name,artist){
-  player.src = src;
-  player.play();
-  title.textContent = name + " - " + artist;
-  playBtn.textContent = "⏸";
+// 1. Identify all players and buttons
+const player = document.getElementById('audio-player');
+const title = document.getElementById('song-title');
+const playBtn = document.getElementById('play');
+const volumeSlider = document.getElementById('volume-slider');
+const muteBtn = document.getElementById('mute-btn');
+
+// --- VOLUME MEMORY ---
+function setupVolume() {
+    const savedVol = localStorage.getItem("vibeStreamVolume") || 0.5;
+    player.volume = savedVol;
+    if (volumeSlider) {
+        volumeSlider.value = savedVol;
+        volumeSlider.addEventListener('input', (e) => {
+            player.volume = e.target.value;
+            localStorage.setItem("vibeStreamVolume", e.target.value);
+            updateMuteIcon(e.target.value);
+        });
+    }
 }
 
-playBtn.addEventListener('click',()=>{
-  if(player.paused){
+function updateMuteIcon(vol) {
+    if (muteBtn) muteBtn.textContent = vol == 0 ? '🔇' : vol < 0.5 ? '🔉' : '🔊';
+}
+
+// --- PLAY SONG FUNCTION ---
+function playSong(src, songName, artist) {
+    player.src = src;
     player.play();
-    playBtn.textContent="⏸";
-  } else {
-    player.pause();
-    playBtn.textContent="▶";
-  }
+    const fullTitle = songName + " - " + artist;
+    if (title) title.textContent = fullTitle;
+    if (playBtn) playBtn.textContent = '⏸';
+    
+    // Save to memory
+    localStorage.setItem("lastSongSrc", src);
+    localStorage.setItem("lastSongTitle", fullTitle);
+}
+
+// --- RESUME LOGIC (The most important part) ---
+window.addEventListener("load", () => {
+    setupVolume();
+    
+    const savedSrc = localStorage.getItem("lastSongSrc");
+    const savedTitle = localStorage.getItem("lastSongTitle");
+    const savedTime = localStorage.getItem("lastTime");
+    const wasPlaying = localStorage.getItem("wasPlaying") === "true";
+
+    if (savedSrc) {
+        player.src = savedSrc;
+        if (title) title.textContent = savedTitle;
+        if (savedTime) player.currentTime = parseFloat(savedTime);
+
+        if (wasPlaying) {
+            // Browsers usually block this! We try to play automatically.
+            player.play().then(() => {
+                if (playBtn) playBtn.textContent = '⏸';
+            }).catch(() => {
+                // If it fails, the user just needs to click ONCE anywhere to start
+                console.log("Browser blocked autoplay. Click anywhere to resume.");
+                if (playBtn) playBtn.textContent = '▶'; 
+            });
+        }
+    }
 });
+
+// Save progress every second
+setInterval(() => {
+    if (player.src && !player.paused) {
+        localStorage.setItem("lastTime", player.currentTime);
+        localStorage.setItem("wasPlaying", "true");
+    } else {
+        localStorage.setItem("wasPlaying", "false");
+    }
+}, 1000);
+
+// Basic Button Listeners
+if (playBtn) {
+    playBtn.addEventListener('click', () => {
+        if (player.paused) { player.play(); playBtn.textContent = '⏸'; }
+        else { player.pause(); playBtn.textContent = '▶'; }
+    });
+}
+
+
+
+
 </script>
 
 </body>
+</html>
