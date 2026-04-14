@@ -1,0 +1,195 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>VibeStream Pro | Artist Profile</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+/* Same Pro Styles */
+* { box-sizing:border-box; font-family:'Segoe UI', sans-serif; transition: all 0.3s ease; }
+body { margin:0; background:#050b1e; color:white; display:flex; height:100vh; overflow:hidden; }
+
+/* Sidebar */
+.sidebar { width:240px; background:rgba(11, 16, 40, 0.9); backdrop-filter:blur(15px); padding:1.5rem; display:flex; flex-direction:column; border-right:1px solid rgba(255,255,255,0.05); }
+.sidebar h1 { background: linear-gradient(to right, #3b82f6, #9333ea); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align:center; }
+.sidebar a { color:#94a3b8; text-decoration:none; margin:0.4rem 0; padding:0.8rem 1rem; border-radius:8px; display:block; font-weight:500; }
+.sidebar a:hover { background:rgba(59, 130, 246, 0.1); color:#3b82f6; transform:translateX(8px); }
+
+/* Artist Header Section */
+.main { flex:1; display:flex; flex-direction:column; overflow-y:auto; padding-bottom:110px; }
+.artist-hero { 
+    height: 350px; 
+    background: linear-gradient(to bottom, rgba(5,11,30,0.2), #050b1e), url('artist-banner.jpg') center/cover; 
+    display: flex; 
+    align-items: flex-end; 
+    padding: 3rem;
+}
+.artist-info { display: flex; align-items: center; gap: 2rem; }
+.artist-img { width: 180px; height: 180px; border-radius: 50%; object-fit: cover; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 4px solid #050b1e; }
+.artist-details h1 { font-size: 4rem; margin: 0; text-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+.stats { color: #94a3b8; font-weight: 600; margin-top: 5px; }
+
+/* Tracklist */
+.content { padding: 2rem 3rem; }
+.table { width:100%; border-collapse:collapse; text-align:left; }
+.table tr { border-radius:8px; cursor:pointer; }
+.table tr:hover { background:rgba(255, 255, 255, 0.05); }
+.table td { padding:0.8rem 1rem; border-bottom:1px solid rgba(255,255,255,0.02); }
+.play-btn-large { background:#3b82f6; color:white; border:none; padding:15px 40px; border-radius:30px; font-weight:700; cursor:pointer; margin-bottom: 2rem; }
+
+/* Fixed Player Bar */
+.player { position:fixed; bottom:0; left:0; width:100%; height:90px; background:#0b1028; border-top:1px solid rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:space-between; padding:0 2rem; z-index:1000; }
+.controls span { font-size:1.5rem; margin:0 12px; cursor:pointer; color:#94a3b8; }
+#play { background:#3b82f6; color:white; padding:10px 14px; border-radius:50%; }
+.volume-container { display:flex; align-items:center; gap:10px; width:150px; }
+#volume-slider { -webkit-appearance:none; width:100%; height:4px; background:#1e293b; border-radius:5px; outline:none; }
+#volume-slider::-webkit-slider-thumb { -webkit-appearance:none; width:12px; height:12px; background:#3b82f6; border-radius:50%; cursor:pointer; }
+</style>
+</head>
+
+<body>
+<div class="sidebar">
+  <h1>VibeStream Pro</h1>
+ <a href="index.html">Home</a>
+  <a href="library.html">Library</a>
+  <a href="playlist.html">Playlists</a>
+  <a href="liked_songs.html">Liked Songs</a>
+  
+  <a href="logout.html">Logout</a>
+</div>
+
+<div class="main">
+  <!-- Dynamic Artist Header -->
+  <div class="artist-hero">
+    <div class="artist-info">
+      <img src="images/artistx.jpeg" class="artist-img">
+      <div class="artist-details">
+        <span style="text-transform:uppercase; letter-spacing:2px; font-size:0.8rem;">Verified Artist</span>
+        <h1 id="artist-name">Artist X</h1>
+        <div class="stats">2,450,120 monthly listeners</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <button class="play-btn-large">PLAY</button>
+    <h3>Popular Tracks</h3>
+    <table class="table">
+      <tr onclick="playSong('music/song1.mp3','Song Title 1','Artist X')">
+        <td>1</td>
+        <td><b>Song Title 1</b></td>
+        <td style="color:#94a3b8;">1,200,000 plays</td>
+        <td style="color:#94a3b8;">3:45</td>
+      </tr>
+      <tr onclick="playSong('music/song2.mp3','Song Title 2','Artist X')">
+        <td>2</td>
+        <td><b>Song Title 2</b></td>
+        <td style="color:#94a3b8;">950,000 plays</td>
+        <td style="color:#94a3b8;">4:10</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<div class="player">
+  <div style="width: 30%;">🎵 Now Playing: <b id="song-title">Nothing Yet</b></div>
+  <div class="controls">
+    <span id="play">▶</span>
+  </div>
+  <div class="volume-container">
+    <span id="mute-btn">🔊</span>
+    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5">
+  </div>
+  <audio id="audio-player"></audio>
+</div>
+
+<script>
+// 1. Identify all players and buttons
+const player = document.getElementById('audio-player');
+const title = document.getElementById('song-title');
+const playBtn = document.getElementById('play');
+const volumeSlider = document.getElementById('volume-slider');
+const muteBtn = document.getElementById('mute-btn');
+
+// --- VOLUME MEMORY ---
+function setupVolume() {
+    const savedVol = localStorage.getItem("vibeStreamVolume") || 0.5;
+    player.volume = savedVol;
+    if (volumeSlider) {
+        volumeSlider.value = savedVol;
+        volumeSlider.addEventListener('input', (e) => {
+            player.volume = e.target.value;
+            localStorage.setItem("vibeStreamVolume", e.target.value);
+            updateMuteIcon(e.target.value);
+        });
+    }
+}
+
+function updateMuteIcon(vol) {
+    if (muteBtn) muteBtn.textContent = vol == 0 ? '🔇' : vol < 0.5 ? '🔉' : '🔊';
+}
+
+// --- PLAY SONG FUNCTION ---
+function playSong(src, songName, artist) {
+    player.src = src;
+    player.play();
+    const fullTitle = songName + " - " + artist;
+    if (title) title.textContent = fullTitle;
+    if (playBtn) playBtn.textContent = '⏸';
+    
+    // Save to memory
+    localStorage.setItem("lastSongSrc", src);
+    localStorage.setItem("lastSongTitle", fullTitle);
+}
+
+// --- RESUME LOGIC (The most important part) ---
+window.addEventListener("load", () => {
+    setupVolume();
+    
+    const savedSrc = localStorage.getItem("lastSongSrc");
+    const savedTitle = localStorage.getItem("lastSongTitle");
+    const savedTime = localStorage.getItem("lastTime");
+    const wasPlaying = localStorage.getItem("wasPlaying") === "true";
+
+    if (savedSrc) {
+        player.src = savedSrc;
+        if (title) title.textContent = savedTitle;
+        if (savedTime) player.currentTime = parseFloat(savedTime);
+
+        if (wasPlaying) {
+            // Browsers usually block this! We try to play automatically.
+            player.play().then(() => {
+                if (playBtn) playBtn.textContent = '⏸';
+            }).catch(() => {
+                // If it fails, the user just needs to click ONCE anywhere to start
+                console.log("Browser blocked autoplay. Click anywhere to resume.");
+                if (playBtn) playBtn.textContent = '▶'; 
+            });
+        }
+    }
+});
+
+// Save progress every second
+setInterval(() => {
+    if (player.src && !player.paused) {
+        localStorage.setItem("lastTime", player.currentTime);
+        localStorage.setItem("wasPlaying", "true");
+    } else {
+        localStorage.setItem("wasPlaying", "false");
+    }
+}, 1000);
+
+// Basic Button Listeners
+if (playBtn) {
+    playBtn.addEventListener('click', () => {
+        if (player.paused) { player.play(); playBtn.textContent = '⏸'; }
+        else { player.pause(); playBtn.textContent = '▶'; }
+    });
+}
+</script>
+
+</body>
+</html>
