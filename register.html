@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Create VibeStream Pro Account</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+    margin: 0;
+    /* Darker, richer background with a subtle gradient */
+    background: linear-gradient(to bottom, #050b1e, #1a1f25);
+    font-family: 'Montserrat', sans-serif; /* Modern sans-serif font */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #e0e0e0; /* Lighter, softer text color */
+    overflow: hidden; /* Prevent scrollbars if content exceeds viewport */
+}
+
+.box {
+    /* Slightly softer dark background */
+    background: rgba(26, 31, 41, 0.8); /* Semi-transparent dark background */
+    backdrop-filter: blur(10px); /* Frosted glass effect */
+    padding: 40px; /* Slightly more padding */
+    border-radius: 16px; /* More rounded corners */
+    width: 360px; /* Slightly wider box */
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Softer, more pronounced shadow */
+}
+
+h2 {
+    color: #00f2ea; /* Vibrant accent color for heading */
+    margin-bottom: 30px; /* More space below heading */
+    font-size: 28px; /* Larger heading */
+    font-weight: bold;
+}
+
+input[type="email"],
+input[type="password"] {
+    width: calc(100% - 20px); /* Account for padding */
+    padding: 12px 10px; /* More padding inside input */
+    margin: 10px 0;
+    background: rgba(58, 66, 77, 0.6); /* Semi-transparent input background */
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
+    border-radius: 8px; /* Rounded input fields */
+    color: #ffffff;
+    font-size: 15px;
+    outline: none; /* Remove default outline */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus {
+    border-color: #00f2ea; /* Accent color on focus */
+    box-shadow: 0 0 8px rgba(0, 242, 234, 0.4); /* Glow effect on focus */
+}
+
+button[type="submit"] {
+    width: 100%;
+    padding: 12px 10px;
+    margin-top: 20px; /* More space above button */
+    /* Gradient button matching the music player's style */
+    background: linear-gradient(to right, #00f2ea, #00c6ff);
+    border: none;
+    border-radius: 25px; /* Pill-shaped button */
+    cursor: pointer;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 16px;
+    transition: background 0.3s ease, transform 0.2s ease; /* Smooth transition */
+}
+
+button[type="submit"]:hover {
+    background: linear-gradient(to right, #00c6ff, #00f2ea); /* Reversed gradient on hover */
+    transform: translateY(-2px); /* Slight lift effect */
+}
+
+/* Message styling for success and error */
+#message {
+    margin-top: 15px; /* Space above message area */
+    min-height: 1.2em; /* Reserve space to prevent layout shifts */
+    font-size: 14px;
+}
+
+.success {
+    color: #4ade80; /* Vibrant success green */
+    font-weight: bold;
+}
+
+.error {
+    color: #ff4d4d; /* Vibrant error red */
+    font-weight: bold;
+}
+
+/* Optional: Add a subtle animation for the box */
+.box {
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Ensure font is loaded if using Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+</style>
+</head>
+
+<body>
+
+<div class="box">
+<h2>Create Account</h2>
+
+<form onsubmit="return createAccount()">
+<input type="email" id="newEmail" placeholder="Email" required>
+<input type="password" id="newPassword" placeholder="Password" required>
+<input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+<button type="submit">Create Account</button>
+</form>
+
+<div id="message"></div>
+
+</div>
+
+<script>
+function createAccount(){
+
+    const email = document.getElementById("newEmail").value;
+    const password = document.getElementById("newPassword").value;
+    const confirm = document.getElementById("confirmPassword").value;
+
+    if(password !== confirm){
+        document.getElementById("message").innerHTML =
+        "<div class='error'>Passwords do not match.</div>";
+        return false;
+    }
+
+    localStorage.setItem("spongEmail", email);
+    localStorage.setItem("spongPassword", password);
+
+    document.getElementById("message").innerHTML =
+    "<div class='success'>Account created successfully! Redirecting...</div>";
+
+    setTimeout(function(){
+        window.location.href="login.html";
+    },1500);
+
+    return false;
+}
+</script>
+
+</body>
+</html>
