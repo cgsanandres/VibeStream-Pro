@@ -6,33 +6,91 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-* { box-sizing:border-box; font-family:Arial, sans-serif; }
-body { margin:0; background:#050b1e; color:white; display:flex; height:100vh; }
-.sidebar { width:220px; background:#0b1028; padding:1rem; display:flex; flex-direction:column; }
-.sidebar h1 { color:#3b82f6; text-align:center; }
-.sidebar a { color:#aaa; text-decoration:none; margin:0.7rem 0; display:block; }
-.sidebar a:hover { color:#3b82f6; }
-.main { flex:1; display:flex; flex-direction:column; padding:1rem; overflow-y:auto; }
-h2 { margin-top:0; }
-.table { width:100%; border-collapse:collapse; }
-.table tr { border-bottom:1px solid #222; cursor:pointer; }
-.table td { padding:0.5rem; vertical-align:middle; }
-.table img { width:50px; border-radius:6px; }
-.table tr:hover { background:rgba(59,130,246,0.2); }
-.player { height:70px; background:#0b1028; display:flex; align-items:center; justify-content:space-between; padding:0 1rem; }
-.controls span { margin:0 10px; cursor:pointer; }
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #050b1e; }
+::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; }
+
+* { box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; transition: all 0.2s ease; }
+
+body { 
+    margin: 0; 
+    background: linear-gradient(135deg, #050b1e 0%, #0d1224 100%); 
+    color: white; 
+    display: flex; 
+    height: 100vh; 
+    overflow: hidden; 
+}
+
+/* Sidebar Glassmorphism */
+.sidebar { 
+    width: 240px; 
+    background: rgba(11, 16, 40, 0.9); 
+    backdrop-filter: blur(15px);
+    padding: 1.5rem; 
+    display: flex; 
+    flex-direction: column; 
+    border-right: 1px solid rgba(255,255,255,0.05);
+}
+
+.sidebar h1 { 
+    font-size: 1.6rem;
+    background: linear-gradient(to right, #3b82f6, #9333ea);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.sidebar a { 
+    color: #94a3b8; text-decoration: none; margin: 0.4rem 0; 
+    padding: 0.8rem 1rem; border-radius: 8px; display: block; font-weight: 500;
+}
+
+.sidebar a:hover { background: rgba(59, 130, 246, 0.1); color: #3b82f6; transform: translateX(8px); }
+
+/* Main Content Area */
+.main { flex: 1; display: flex; flex-direction: column; padding: 2rem; overflow-y: auto; padding-bottom: 110px; }
+h2 { font-size: 2.5rem; margin-bottom: 1.5rem; }
+
+/* Modern Tracklist Table */
+.table { width: 100%; border-collapse: collapse; text-align: left; }
+.table thead { color: #94a3b8; border-bottom: 1px solid rgba(255,255,255,0.1); text-transform: uppercase; font-size: 0.8rem; }
+.table th { padding: 1rem; font-weight: 600; }
+
+.table tr { border-radius: 8px; cursor: pointer; }
+.table tr:hover { background: rgba(255, 255, 255, 0.05); }
+
+.table td { padding: 0.8rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.02); }
+.table img { width: 45px; height: 45px; border-radius: 4px; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
+
+/* Fixed Player Bar */
+.player { 
+    position: fixed; bottom: 0; left: 0; width: 100%; height: 90px; 
+    background: #0b1028; border-top: 1px solid rgba(255,255,255,0.1);
+    display: flex; align-items: center; justify-content: space-between; 
+    padding: 0 2rem; z-index: 1000;
+}
+
+.controls span { font-size: 1.5rem; margin: 0 12px; cursor: pointer; color: #94a3b8; }
+.controls span:hover { color: #3b82f6; transform: scale(1.1); }
+#play { background: #3b82f6; color: white; padding: 10px 14px; border-radius: 50%; }
+
+.volume-container { display: flex; align-items: center; gap: 10px; width: 150px; }
+#volume-slider { -webkit-appearance: none; width: 100%; height: 4px; background: #1e293b; border-radius: 5px; outline: none; }
+#volume-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; background: #3b82f6; border-radius: 50%; cursor: pointer; }
+
 </style>
 </head>
 
 <body>
 <div class="sidebar">
   <h1>VibeStream Pro</h1>
-  <a href="spongtifymain.html">Home</a>
+  <a href="index.html">Home</a>
   <a href="library.html">Library</a>
   <a href="playlist.html">Playlists</a>
   <a href="liked_songs.html">Liked Songs</a>
-   <a href="account.html">Account</a>
-  <a href="spongtify.html">Logout</a>
+  <a href="login.html">Logout</a>
 
 </div>
 
@@ -40,43 +98,43 @@ h2 { margin-top:0; }
   <h2>Liked Songs</h2>
   <table class="table">
     <tr onclick="playSong('music/multo.mp3','Multo','Cup of Joe')">
-      <td><img src="C:\Users\SBH-CL3-WS01\Desktop\WebDev111\mimasour\multo.jpeg"></td>
+      <td><img src="images/multo.jpeg"></td>
       <td>Multo</td>
       <td>Cup of Joe</td>
       <td>4:00</td>
     </tr>
    <tr onclick="playSong('music/nothinonyou.mp3', 'Nothin On You', 'B.o.B, Bruno Mars')">
-  <td><img src="C:\Users\SBH-CL3-WS01\Desktop\WebDev111\mimasour\nothingonyou.jpeg"></td>
+  <td><img src="images/nothingonyou.jpeg"></td>
   <td>Nothin' On You</td>
   <td>B.o.B, Bruno Mars</td>
   <td>3:34</td>
 	</tr>
     <tr onclick="playSong('music/billionaire.mp3','Billionaire','Travie McCoy ft. Bruno Mars')">
-      <td><img src="C:\Users\SBH-CL3-WS01\Desktop\WebDev111\mimasour\billionaire.jpeg"></td>
+      <td><img src="images/billionaire.jpeg"></td>
       <td>Billionaire</td>
       <td>Travie McCoy ft. Bruno Mars</td>
       <td>3:31</td>
     </tr>
 	<tr onclick="playSong('music/kanibalismo.mp3','Kanibalismo','fitterkarma')">
-      <td><img src="C:\Users\SBH-CL3-WS01\Desktop\WebDev111\mimasour\kanibalismo.jpeg"></td>
+      <td><img src="images/kanibalismo.jpeg"></td>
       <td>Kanibalismo</td>
       <td>fitterkarma</td>
       <td>3:27</td>
     </tr>
-	<tr onclick="playSong('music/dontmatter.mp3','Kanibalismo','fitterkarma')">
-      <td><img src="C:\Users\SBH-CL3-WS01\Desktop\WebDev111\mimasour\dontmatter.jpeg"></td>
+	<tr onclick="playSong('music/dontmatter.mp3','Don't Matter','Akon')">
+      <td><img src="images/dontmatter.jpeg"></td>
       <td>Don't Matter</td>
       <td>Akon</td>
       <td>4:04</td>
     </tr>
-	<tr onclick="playSong('music/leaves.mp3','Leavews','Ben & Ben')">
-      <td><img src="C:\Users\SBH-CL3-WS01\Desktop\WebDev111\mimasour\leaves.jpeg"></td>
+	<tr onclick="playSong('music/leaves.mp3','Leaves','Ben & Ben')">
+      <td><img src="images/leaves.jpeg"></td>
       <td>Leaves</td>
       <td>Ben & Ben</td>
       <td>5:11</td>
     </tr>
 	<tr onclick="playSong('music/those_eyes.mp3','Those Eyes','New West')">
-      <td><img src="C:\Users\SBH-CL3-WS01\Desktop\WebDev111\mimasour\those_eyes.jpeg"></td>
+      <td><img src="images/those_eyes.jpeg"></td>
       <td>Those Eyes</td>
       <td>New West</td>
       <td>3:41</td>
@@ -84,24 +142,130 @@ h2 { margin-top:0; }
   </table>
 </div>
 
+
+<!-- Updated Player with Volume/Mute -->
 <div class="player">
-  <div>🎵 Now Playing: <b id="song-title">Nothing Yet</b></div>
+  <div style="width: 30%;">🎵 Now Playing: <b id="song-title">Nothing Yet</b></div>
   <div class="controls">
     <span id="prev">⏮</span>
     <span id="play">▶</span>
     <span id="next">⏭</span>
   </div>
+  <div class="volume-container">
+    <span id="mute-btn" style="cursor:pointer;">🔊</span>
+    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5">
+  </div>
   <audio id="audio-player" src="" preload="auto"></audio>
 </div>
 
+
 <script>
-const player=document.getElementById('audio-player');
-const title=document.getElementById('song-title');
-const playBtn=document.getElementById('play');
-function playSong(src,songName,artist){player.src=src;player.play();title.textContent=songName+' - '+artist;playBtn.textContent='⏸';}
-playBtn.addEventListener('click',()=>{if(player.paused){player.play();playBtn.textContent='⏸';}else{player.pause();playBtn.textContent='▶';}});
+// 1. Identify all players and buttons
+const player = document.getElementById('audio-player');
+const title = document.getElementById('song-title');
+const playBtn = document.getElementById('play');
+const volumeSlider = document.getElementById('volume-slider');
+const muteBtn = document.getElementById('mute-btn');
+
+// --- VOLUME MEMORY ---
+function setupVolume() {
+    const savedVol = localStorage.getItem("vibeStreamVolume") || 0.5;
+    player.volume = savedVol;
+    if (volumeSlider) {
+        volumeSlider.value = savedVol;
+        volumeSlider.addEventListener('input', (e) => {
+            player.volume = e.target.value;
+            localStorage.setItem("vibeStreamVolume", e.target.value);
+            updateMuteIcon(e.target.value);
+        });
+    }
+}
+
+function updateMuteIcon(vol) {
+    if (muteBtn) muteBtn.textContent = vol == 0 ? '🔇' : vol < 0.5 ? '🔉' : '🔊';
+}
+
+// --- PLAY SONG FUNCTION ---
+function playSong(src, songName, artist) {
+    player.src = src;
+    player.play();
+    const fullTitle = songName + " - " + artist;
+    if (title) title.textContent = fullTitle;
+    if (playBtn) playBtn.textContent = '⏸';
+    
+    // Save to memory
+    localStorage.setItem("lastSongSrc", src);
+    localStorage.setItem("lastSongTitle", fullTitle);
+}
+
+// --- RESUME LOGIC (The most important part) ---
+window.addEventListener("load", () => {
+    setupVolume();
+    
+    const savedSrc = localStorage.getItem("lastSongSrc");
+    const savedTitle = localStorage.getItem("lastSongTitle");
+    const savedTime = localStorage.getItem("lastTime");
+    const wasPlaying = localStorage.getItem("wasPlaying") === "true";
+
+    if (savedSrc) {
+        player.src = savedSrc;
+        if (title) title.textContent = savedTitle;
+        if (savedTime) player.currentTime = parseFloat(savedTime);
+
+        if (wasPlaying) {
+            // Browsers usually block this! We try to play automatically.
+            player.play().then(() => {
+                if (playBtn) playBtn.textContent = '⏸';
+            }).catch(() => {
+                // If it fails, the user just needs to click ONCE anywhere to start
+                console.log("Browser blocked autoplay. Click anywhere to resume.");
+                if (playBtn) playBtn.textContent = '▶'; 
+            });
+        }
+    }
+});
+
+// Save progress every second
+setInterval(() => {
+    if (player.src && !player.paused) {
+        localStorage.setItem("lastTime", player.currentTime);
+        localStorage.setItem("wasPlaying", "true");
+    } else {
+        localStorage.setItem("wasPlaying", "false");
+    }
+}, 1000);
+
+// Basic Button Listeners
+if (playBtn) {
+    playBtn.addEventListener('click', () => {
+        if (player.paused) { player.play(); playBtn.textContent = '⏸'; }
+        else { player.pause(); playBtn.textContent = '▶'; }
+    });
+}
+
+// Function to handle automatic next track
+player.addEventListener('ended', () => {
+    // 1. Get all the song elements on the page
+    const allSongs = document.querySelectorAll('.song, .card, tr[onclick]');
+    let currentIndex = -1;
+
+    // 2. Find which song is currently playing by checking the source
+    allSongs.forEach((song, index) => {
+        if (song.getAttribute('onclick').includes(player.src.split('/').pop())) {
+            currentIndex = index;
+        }
+    });
+
+    // 3. If there is a next song, click it!
+    if (currentIndex !== -1 && currentIndex < allSongs.length - 1) {
+        allSongs[currentIndex + 1].click();
+    } else {
+        // Optional: Loop back to the first song if at the end
+        allSongs[0].click();
+    }
+});
+
+
 </script>
 </body>
 </html>
-
-
