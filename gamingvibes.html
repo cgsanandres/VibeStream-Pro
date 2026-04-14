@@ -136,14 +136,7 @@ h2 { font-size: 2.5rem; margin-bottom: 1.5rem; }
   <audio id="audio-player" src="" preload="auto"></audio>
 </div>
 
-<script>
-// 1. Grab all elements
-const player = document.getElementById('audio-player');
-const title = document.getElementById('song-title');
-const playBtn = document.getElementById('play');
-const volumeSlider = document.getElementById('volume-slider');
-const muteBtn = document.getElementById('mute-btn');
-
+	<script>
 // 1. Identify all players and buttons
 const player = document.getElementById('audio-player');
 const title = document.getElementById('song-title');
@@ -227,10 +220,27 @@ if (playBtn) {
     });
 }
 
+// Function to handle automatic next track
+player.addEventListener('ended', () => {
+    // 1. Get all the song elements on the page
+    const allSongs = document.querySelectorAll('.song, .card, tr[onclick]');
+    let currentIndex = -1;
 
+    // 2. Find which song is currently playing by checking the source
+    allSongs.forEach((song, index) => {
+        if (song.getAttribute('onclick').includes(player.src.split('/').pop())) {
+            currentIndex = index;
+        }
+    });
 
-
-</script>
-
+    // 3. If there is a next song, click it!
+    if (currentIndex !== -1 && currentIndex < allSongs.length - 1) {
+        allSongs[currentIndex + 1].click();
+    } else {
+        // Optional: Loop back to the first song if at the end
+        allSongs[0].click();
+    }
+});
+	</script>
 </body>
 </html>
